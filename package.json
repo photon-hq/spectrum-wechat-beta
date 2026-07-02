@@ -46,7 +46,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "smoke": "tsx examples/echo-bot.ts",
+    "smoke": "tsx scripts/live-smoke.ts",
+    "example:echo": "tsx examples/echo-bot.ts",
+    "prepare": "pnpm build",
     "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {
