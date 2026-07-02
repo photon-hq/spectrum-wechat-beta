@@ -43,6 +43,7 @@ openssl rand -hex 32 > ~/.config/agent-wechat/token
 
 # 2. start the container (Docker Desktop / Colima)
 npx @agent-wechat/cli up
+#    …or use the bundled compose file:  docker compose up -d
 
 # 3. log in by scanning the QR in the VNC window
 #    http://localhost:6174/vnc/?token=<your-token>

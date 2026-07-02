@@ -1,0 +1,35 @@
+# Bring up the agent-wechat container this SDK talks to (REST API on :6174).
+#
+#   # 1. create an API token (once)
+#   mkdir -p ~/.config/agent-wechat
+#   openssl rand -hex 32 > ~/.config/agent-wechat/token
+#
+#   # 2. start it, then scan the QR at http://localhost:6174/vnc/?token=<token>
+#   docker compose up -d
+#
+# On Windows, set TOKEN_PATH to your token file, e.g. in a .env next to this file:
+#   TOKEN_PATH=${USERPROFILE}/.config/agent-wechat/token
+services:
+  agent-wechat:
+    image: ghcr.io/thisnick/agent-wechat:latest
+    container_name: agent-wechat
+    security_opt:
+      - seccomp=unconfined
+    cap_add:
+      - SYS_PTRACE
+      - NET_ADMIN # optional: transparent proxy support
+    ports:
+      - "6174:6174"
+    volumes:
+      - agent-wechat-data:/data
+      - agent-wechat-home:/home/wechat
+      - ${TOKEN_PATH:-~/.config/agent-wechat/token}:/data/auth-token:ro
+    environment:
+      - PROXY=${PROXY:-}
+    restart: unless-stopped
+
+volumes:
+  agent-wechat-data:
+    name: agent-wechat-data
+  agent-wechat-home:
+    name: agent-wechat-home
